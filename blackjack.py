@@ -1,59 +1,138 @@
-import random
-import time
-
-dealer = 0
-jatekos = 0
-huzas = 0
-megy = 1
-
-def huz(ki):
-    global huzas
-    global jatekos
-    global dealer
-    huzas = random.randint(1,11)
-    if ki == "jatekos":
-        jatekos += huzas
-    if ki == "dealer":
-        dealer += huzas
-
-def dontes():
-    global megy
-    global jatekos
-    valasz = input("Szeretnél kártyát felhúzni, vagy megállsz? [húzás/megállás]:")
-    print("\n\n\n\n\n\n\n")
-    if valasz == "húzás":
-        huz("jatekos")
-        if jatekos > 21:
-            megy = 0
-        else:
-            print(f"Dealer🐱‍👤: {dealer} \nJátékos😎: {jatekos}\n")
-    elif valasz == "megállás":
-        megy = 0
-
-print("Üdvözöllek, ez itt egy BlackJack játék!")
-print("A dealer és a játékos is húz kettő-kettő lapot. \n")
-i = 2
-while i > 0:
-    huz("dealer")
-    huz("jatekos")
-    i = i-1
-
-print(f"Dealer🐱‍👤: {dealer} \nJátékos😎: {jatekos}\n")
-while megy == 1:
-    dontes()
-if megy == 0:
-    print(f"Dealer🐱‍👤: {dealer} \nJátékos😎: {jatekos}\n")
-    time.sleep(1)
-    if jatekos <= 21:
-        while dealer <= 16:
-            huz("dealer")
-            print("Húz a dealer...")
-            time.sleep(1)
+    import random
+    import time
+    
+    dealer = 0
+    jatekosszam = 0
+    dealerlapjai = []
+    jatekos = 0
+    jatekoslapjai = []
+    jatekos2 = 0
+    jatekos2lapjai = []
+    huzas = 0
+    megy = 1
+    
+    def kiiras(opcio):
+        global dealer
+        global jatekos
+        global jatekos2
+        global dealerlapjai
+        global jatekoslapjai
+        global jatekos2lapjai
+    
+        if opcio == "dealer":
+            print(f"Dealer lapjai🐱‍👤: lapok:{dealerlapjai} ({dealer}) \nJátékos😎: lapok:{jatekoslapjai} ({jatekos})\n")
+        elif opcio == "jatekos":
+            print(f"Játékos 1😎: lapok:{jatekoslapjai} ({jatekos}) \nJátékos 2😎: lapok:{jatekos2lapjai} ({jatekos2})\n")
+    
+    def huz(ki):
+        global huzas
+        global jatekos
+        global jatekos2
+        global dealer
+        huzas = random.randint(2,11)
+        if ki == "jatekos":
+            jatekos += huzas
+            jatekoslapjai.append(huzas)
+        if ki == "dealer":
+            dealer += huzas
+            dealerlapjai.append(huzas)
+        if ki == "jatekos2":
+            jatekos2 += huzas
+            jatekos2lapjai.append(huzas)
+    
+    def dontes(ki):
+        global megy
+        global jatekos
+        global jatekosszam
+        global jatekos2
+    
+        if ki == "jatekos":
+            valasz = input("Szeretnél kártyát felhúzni, vagy megállsz? [húzás/megállás]:")
             print("\n\n\n\n\n\n\n")
-            print(f"Dealer🐱‍👤: {dealer} \nJátékos😎: {jatekos}\n")
-        if dealer > jatekos and dealer <= 21:
-            print("❌Vesztettél!❌")
-        else:
-            print("💲Nyertél!💲")
+            if valasz == "megállás":
+                megy = 0
+                return
+            if valasz == "húzás":
+                huz("jatekos")
+            if jatekos > 21:
+                megy = 0
+            elif jatekosSzam == 1:
+                kiiras("dealer")
+            else:
+                kiiras("jatekos")
+    
+        if ki == "jatekos2":
+            valasz = input("Szeretnél kártyát felhúzni, vagy megállsz? [húzás/megállás]:")
+            print("\n\n\n\n\n\n\n")
+            if valasz == "húzás":
+                huz("jatekos2")
+            if valasz == "megállás":
+                megy = 0
+                return
+            if jatekos2 > 21:
+                megy = 0
+            kiiras("jatekos")
+    
+    print("Üdvözöllek, ez itt egy BlackJack játék!")
+    jatekosSzam = int(input("Hány játékos fog játszani? [1 / 2]:"))
+    
+    if jatekosSzam == 1:
+        print("A dealer és a játékos is húz kettő-kettő lapot. \n")
+        i = 2
+        while i > 0:
+            huz("dealer")
+            huz("jatekos")
+            i = i - 1
+        kiiras("dealer")
+        while megy == 1:
+            dontes("jatekos")
+        if megy == 0:
+            kiiras("dealer")
+            time.sleep(1)
+            if jatekos <= 21:
+                while dealer <= 16:
+                    huz("dealer")
+                    print("Húz a dealer...")
+                    time.sleep(3)
+                    print("\n\n\n\n\n\n\n")
+                    kiiras("dealer")
+                if dealer > jatekos and dealer <= 21:
+                    print("❌Vesztettél!❌")
+                elif dealer == jatekos:
+                    print("Döntetlen!")
+                else:
+                    print("💲Nyertél!💲")
+            else:
+                print("❌Vesztettél, mivel átlépted a 21-et!❌")
     else:
-        print("❌Vesztettél, mivel átlépted a 21-et!❌")
+        print("Mindkét játékos húz kettő-kettő lapot. \n")
+        i = 2
+        while i > 0:
+            huz("jatekos")
+            huz("jatekos2")
+            i = i - 1
+        kiiras("jatekos")
+        while megy == 1:
+            dontes("jatekos")
+        print("Most a második játékos jön...")
+        megy = 1
+        time.sleep(1)
+        kiiras("jatekos")
+        while megy == 1:
+            dontes("jatekos2")
+    
+    if jatekosSzam == 2:
+        if jatekos <= 21 and jatekos2 <= 21:
+            if jatekos > jatekos2:
+                print("1️⃣Az első játékos nyert!1️⃣")
+            elif jatekos < jatekos2:
+                print("2️⃣A második játékos nyert!2️⃣")
+            else:
+                print("🔄Döntetlen!🔄")
+        elif jatekos > 21 and jatekos2 > 21:
+            print("🔄Döntetlen🔄")
+            jatekosSzam = 0
+        elif jatekos > 21:
+            print("2️⃣Második játékos nyert!2️⃣")
+        elif jatekos2 > 21:
+            print("1️⃣Első játékos nyert!1️⃣")
