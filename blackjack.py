@@ -47,12 +47,12 @@ def dontes(ki):
     global jatekos2
 
     if ki == "jatekos":
-        valasz = input("Szeretnél kártyát felhúzni, vagy megállsz? [húzás/megállás]:")
+        valasz = input("Szeretnél kártyát felhúzni? [i/n]:")
         print("\n\n\n\n\n\n\n")
-        if valasz == "megállás":
+        if valasz == "n":
             megy = 0
             return
-        if valasz == "húzás":
+        if valasz == "i":
             huz("jatekos")
         if jatekos > 21:
             megy = 0
@@ -62,11 +62,11 @@ def dontes(ki):
             kiiras("jatekos")
 
     if ki == "jatekos2":
-        valasz = input("Szeretnél kártyát felhúzni, vagy megállsz? [húzás/megállás]:")
+        valasz = input("Szeretnél kártyát felhúzni? [i/n]:")
         print("\n\n\n\n\n\n\n")
-        if valasz == "húzás":
+        if valasz == "i":
             huz("jatekos2")
-        if valasz == "megállás":
+        if valasz == "n":
             megy = 0
             return
         if jatekos2 > 21:
